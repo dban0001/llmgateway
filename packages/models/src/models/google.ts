@@ -404,4 +404,26 @@ export const googleModels = [
 		],
 		jsonOutput: true,
 	},
+	{
+		id: "gemma-2-27b-it-together",
+		name: "Gemma 2 27B IT",
+		family: "google",
+		deprecatedAt: undefined,
+		deactivatedAt: undefined,
+		providers: [
+			{
+				providerId: "together.ai",
+				modelName: "google/gemma-2-27b-it",
+				inputPrice: 0.08 / 1e6,
+				outputPrice: 0.08 / 1e6,
+				requestPrice: 0,
+				contextSize: 8192,
+				maxOutput: undefined,
+				streaming: true,
+				vision: false,
+				tools: true,
+			},
+		],
+		jsonOutput: true,
+	},
 ] as const satisfies ModelDefinition[];
