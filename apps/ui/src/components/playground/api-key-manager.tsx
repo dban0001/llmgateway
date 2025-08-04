@@ -32,7 +32,6 @@ import {
 	TabsTrigger,
 } from "@/lib/components/tabs";
 import { toast } from "@/lib/components/use-toast";
-import { useAppConfig } from "@/lib/config";
 
 const apiKeySchema = z.object({
 	apiKey: z
@@ -46,7 +45,6 @@ const apiKeySchema = z.object({
 interface ApiKeyManagerProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	selectedModel: string;
 }
 
 function CreateNewKeyForm({
@@ -131,16 +129,11 @@ function CreateNewKeyForm({
 	);
 }
 
-export function ApiKeyManager({
-	open,
-	onOpenChange,
-	selectedModel,
-}: ApiKeyManagerProps) {
+export function ApiKeyManager({ open, onOpenChange }: ApiKeyManagerProps) {
 	const { userApiKey, setUserApiKey, clearUserApiKey, isLoaded } = useApiKey();
 	const [isLoading, setIsLoading] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [showKey, setShowKey] = useState(false);
-	const config = useAppConfig();
 
 	const form = useForm<z.infer<typeof apiKeySchema>>({
 		resolver: zodResolver(apiKeySchema),
@@ -169,14 +162,13 @@ export function ApiKeyManager({
 	const handleSubmit = async (values: z.infer<typeof apiKeySchema>) => {
 		setIsLoading(true);
 		try {
-			const testResponse = await fetch(config.apiUrl + "/chat/completion", {
+			const testResponse = await fetch("/chat/completion", {
 				method: "POST",
-				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					model: selectedModel,
+					model: "gpt-4o-mini",
 					messages: [{ role: "user", content: "Hello" }],
 					stream: false,
 					apiKey: values.apiKey.trim(),
