@@ -28,13 +28,9 @@ import type { ActivitT } from "@/types/activity";
 
 interface UsageClientProps {
 	initialActivityData?: ActivitT;
-	projectId: string | undefined;
 }
 
-export function UsageClient({
-	initialActivityData,
-	projectId,
-}: UsageClientProps) {
+export function UsageClient({ initialActivityData }: UsageClientProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { buildUrl } = useDashboardNavigation();
@@ -98,10 +94,7 @@ export function UsageClient({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="h-[400px]">
-								<UsageChart
-									initialData={initialActivityData}
-									projectId={projectId}
-								/>
+								<UsageChart initialData={initialActivityData} />
 							</CardContent>
 						</Card>
 					</TabsContent>
@@ -112,10 +105,7 @@ export function UsageClient({
 								<CardDescription>Usage breakdown by model</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<ModelUsageTable
-									initialData={initialActivityData}
-									projectId={projectId}
-								/>
+								<ModelUsageTable initialData={initialActivityData} />
 							</CardContent>
 						</Card>
 					</TabsContent>
@@ -128,10 +118,7 @@ export function UsageClient({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="h-[400px]">
-								<ErrorRateChart
-									initialData={initialActivityData}
-									projectId={projectId}
-								/>
+								<ErrorRateChart initialData={initialActivityData} />
 							</CardContent>
 						</Card>
 					</TabsContent>
@@ -144,10 +131,7 @@ export function UsageClient({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="h-[400px]">
-								<CacheRateChart
-									initialData={initialActivityData}
-									projectId={projectId}
-								/>
+								<CacheRateChart initialData={initialActivityData} />
 							</CardContent>
 						</Card>
 					</TabsContent>
@@ -160,10 +144,7 @@ export function UsageClient({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="h-[400px]">
-								<CostBreakdownChart
-									initialData={initialActivityData}
-									projectId={projectId}
-								/>
+								<CostBreakdownChart initialData={initialActivityData} />
 							</CardContent>
 						</Card>
 					</TabsContent>

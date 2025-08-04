@@ -18,13 +18,9 @@ import type { ActivitT } from "@/types/activity";
 
 interface ErrorRateChartProps {
 	initialData?: ActivitT;
-	projectId: string | undefined;
 }
 
-export function ErrorRateChart({
-	initialData,
-	projectId,
-}: ErrorRateChartProps) {
+export function ErrorRateChart({ initialData }: ErrorRateChartProps) {
 	const searchParams = useSearchParams();
 	const { selectedProject } = useDashboardState();
 
@@ -40,17 +36,17 @@ export function ErrorRateChart({
 			params: {
 				query: {
 					days: String(days),
-					...(projectId ? { projectId: projectId } : {}),
+					...(selectedProject?.id ? { projectId: selectedProject.id } : {}),
 				},
 			},
 		},
 		{
-			enabled: !!projectId,
+			enabled: !!selectedProject?.id,
 			initialData,
 		},
 	);
 
-	if (!projectId) {
+	if (!selectedProject) {
 		return (
 			<div className="flex h-[350px] items-center justify-center">
 				<p className="text-muted-foreground">

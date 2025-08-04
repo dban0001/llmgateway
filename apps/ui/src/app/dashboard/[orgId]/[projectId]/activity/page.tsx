@@ -1,8 +1,7 @@
-import { RecentLogs } from "@/components/activity/recent-logs";
-import { Card, CardContent } from "@/lib/components/card";
+import { ActivityClient } from "@/components/activity/activity-client";
 import { fetchServerData } from "@/lib/server-api";
 
-import type { LogsData } from "@/types/activity";
+import type { ActivitT, LogsData } from "@/types/activity";
 
 // Force dynamic rendering since this page uses server-side data fetching with cookies
 export const dynamic = "force-dynamic";
@@ -25,6 +24,10 @@ export default async function ActivityPage({
 }) {
 	const { projectId } = await params;
 	const searchParamsData = await searchParams;
+	const days = searchParamsData?.days;
+
+	// Default to "7" days, only use "30" if explicitly specified
+	const daysParam = days === "30" ? "30" : "7";
 
 	// Build query parameters for logs - same as client-side
 	const logsQueryParams: Record<string, string> = {
@@ -70,22 +73,24 @@ export default async function ActivityPage({
 		},
 	});
 
+	// Server-side data fetching for activity data
+	const initialActivityData = await fetchServerData<ActivitT>(
+		"GET",
+		"/activity",
+		{
+			params: {
+				query: {
+					days: daysParam,
+					projectId,
+				},
+			},
+		},
+	);
+
 	return (
-		<div className="flex flex-col">
-			<div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-				<h2 className="text-3xl font-bold tracking-tight">Activity Logs</h2>
-				<p>Your recent API requests and system events</p>
-				<div className="space-y-4">
-					<Card>
-						<CardContent>
-							<RecentLogs
-								initialData={initialLogsData || undefined}
-								projectId={projectId}
-							/>
-						</CardContent>
-					</Card>
-				</div>
-			</div>
-		</div>
+		<ActivityClient
+			initialLogsData={initialLogsData || undefined}
+			initialActivityData={initialActivityData || undefined}
+		/>
 	);
 }

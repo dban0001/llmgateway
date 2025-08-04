@@ -18,10 +18,9 @@ import type { ActivitT } from "@/types/activity";
 
 interface UsageChartProps {
 	initialData?: ActivitT;
-	projectId: string | undefined;
 }
 
-export function UsageChart({ initialData, projectId }: UsageChartProps) {
+export function UsageChart({ initialData }: UsageChartProps) {
 	const searchParams = useSearchParams();
 	const { selectedProject } = useDashboardState();
 
@@ -37,17 +36,17 @@ export function UsageChart({ initialData, projectId }: UsageChartProps) {
 			params: {
 				query: {
 					days: String(days),
-					...(projectId ? { projectId: projectId } : {}),
+					...(selectedProject?.id ? { projectId: selectedProject.id } : {}),
 				},
 			},
 		},
 		{
-			enabled: !!projectId,
+			enabled: !!selectedProject?.id,
 			initialData,
 		},
 	);
 
-	if (!projectId) {
+	if (!selectedProject) {
 		return (
 			<div className="flex h-[350px] items-center justify-center">
 				<p className="text-muted-foreground">

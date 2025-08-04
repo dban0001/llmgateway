@@ -23,13 +23,9 @@ type SortDirection = "asc" | "desc";
 
 interface ModelUsageTableProps {
 	initialData?: ActivitT;
-	projectId: string | undefined;
 }
 
-export function ModelUsageTable({
-	initialData,
-	projectId,
-}: ModelUsageTableProps) {
+export function ModelUsageTable({ initialData }: ModelUsageTableProps) {
 	const searchParams = useSearchParams();
 	const [sortColumn, setSortColumn] = useState<SortColumn>("totalTokens");
 	const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -47,12 +43,12 @@ export function ModelUsageTable({
 			params: {
 				query: {
 					days: String(days),
-					...(projectId ? { projectId: projectId } : {}),
+					...(selectedProject?.id ? { projectId: selectedProject.id } : {}),
 				},
 			},
 		},
 		{
-			enabled: !!projectId,
+			enabled: !!selectedProject?.id,
 			initialData,
 		},
 	);
@@ -79,7 +75,7 @@ export function ModelUsageTable({
 		);
 	};
 
-	if (!projectId) {
+	if (!selectedProject) {
 		return (
 			<div className="flex h-[350px] items-center justify-center">
 				<p className="text-muted-foreground">

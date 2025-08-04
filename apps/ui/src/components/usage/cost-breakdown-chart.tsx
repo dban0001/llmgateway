@@ -17,13 +17,9 @@ import type { ActivitT } from "@/types/activity";
 
 interface CostBreakdownChartProps {
 	initialData?: ActivitT;
-	projectId: string | undefined;
 }
 
-export function CostBreakdownChart({
-	initialData,
-	projectId,
-}: CostBreakdownChartProps) {
+export function CostBreakdownChart({ initialData }: CostBreakdownChartProps) {
 	const searchParams = useSearchParams();
 	const { selectedProject } = useDashboardState();
 
@@ -39,17 +35,17 @@ export function CostBreakdownChart({
 			params: {
 				query: {
 					days: String(days),
-					...(projectId ? { projectId: projectId } : {}),
+					...(selectedProject?.id ? { projectId: selectedProject.id } : {}),
 				},
 			},
 		},
 		{
-			enabled: !!projectId,
+			enabled: !!selectedProject?.id,
 			initialData,
 		},
 	);
 
-	if (!projectId) {
+	if (!selectedProject) {
 		return (
 			<div className="flex h-[350px] items-center justify-center">
 				<p className="text-muted-foreground">
